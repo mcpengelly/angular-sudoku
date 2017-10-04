@@ -11,7 +11,7 @@ import { SolverService } from './solver.service';
       <input (click)=onSolveClick() type="button" value="Solve" />
       <input (click)=onResetClick() type="button" value="Reset" />
       <sudoku-board [board]="resultBoard"></sudoku-board>
-      <div>
+      <div id="extra-controls">
         <input #sudokuInput type="text"/>
         <input (click)=onPopulateClick(sudokuInput.value) type="button" value="Populate Sudoku" />
       </div>

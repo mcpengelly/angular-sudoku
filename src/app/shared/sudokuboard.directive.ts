@@ -40,6 +40,5 @@ import { Component, Directive, ElementRef, Input, Renderer } from '@angular/core
 })
 
 export class SudokuBoardDirective {
-  constructor(public el: ElementRef, public renderer: Renderer) {}
   @Input() board: number[][];
 }
