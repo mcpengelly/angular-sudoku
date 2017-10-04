@@ -11,6 +11,10 @@ import { SolverService } from './solver.service';
       <input (click)=onSolveClick() type="button" value="Solve" />
       <input (click)=onResetClick() type="button" value="Reset" />
       <sudoku-board [board]="resultBoard"></sudoku-board>
+      <div>
+        <input #sudokuInput type="text"/>
+        <input (click)=onPopulateClick(sudokuInput.value) type="button" value="Populate Sudoku" />
+      </div>
     </div>
     `,
     providers: [SolverService]
@@ -47,10 +51,27 @@ export class AppComponent {
       [0, 0, 0,  0, 0, 0,  0, 0, 0],
       [0, 0, 0,  0, 0, 0,  0, 0, 0]
   ];
+
   onSolveClick(): void {
     this.resultBoard = this.solver.solve(this.unsolvedBoard); //SolverService
   }
   onResetClick(): void {
     this.resultBoard = Array(9).fill(Array(9).fill(0));
   }
+  onPopulateClick(sudokuPuzzle: string): void {
+    var board = sudokuPuzzle
+      .split(',')
+      .map((x) => {
+        return x.split('').map((y)=>parseInt(y));
+      });
+
+    if(board.length === 9){
+      this.unsolvedBoard = board;
+    }
+    else {
+      console.log('Invalid board input')
+    }
+  }
 }
+
+//000163000,005400000,000500721,900354002,000006000,000000349,700000250,300670090,000001030

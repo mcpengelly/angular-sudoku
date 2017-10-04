@@ -60,16 +60,26 @@ export class SolverService {
     return emptySquares;
   }
 
-  solve(sBoard){
-    var board = sBoard.map((x)=>x.map((x)=>x)); // clone the board
-    console.log('--- Original Board ---');
-    console.log(board)
-    // we need to distinguish which spaces need to be filled
-    var emptySquares = this.findEmptySquares(board);
-    // console.log('emptySquares', emptySquares);
+  checkValidPlacement(board, row, column, value){
+    if(
+    this.checkRow(board, row, value) &&
+    this.checkColumn(board, column, value) &&
+    this.check3x3Square(board, row, column, value)){
+      return true;
+    }
+    return false;
+  }
 
+  solve(sBoard){
+    console.log('--- Original Board ---');
+    console.log(sBoard)
+    var board = sBoard.map((x)=>x.map((x)=>x)); // clone the board
+
+    // distinguish which spaces need to be filled
+    var emptySquares = this.findEmptySquares(board);
     var limit = 9;
     var value;
+
     //go through empty squares,
     for(var i = 0; i < emptySquares.length;){
       var found = false;
@@ -78,10 +88,7 @@ export class SolverService {
       value = board[row][column] + 1; // ?
 
       while(!found && value <= limit){
-        if(this.checkRow(board, row, value) &&
-          this.checkColumn(board, column, value) &&
-          this.check3x3Square(board, row, column, value)
-        ){
+        if(this.checkValidPlacement(board, row, column, value)){
           found = true;
           board[row][column] = value;
           i++;
@@ -98,6 +105,7 @@ export class SolverService {
     }
 
     console.log('--- Solved Board ---');
+    console.log(board);
     return board;
   }
 }

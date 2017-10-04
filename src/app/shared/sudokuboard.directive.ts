@@ -14,8 +14,6 @@ import { Component, Directive, ElementRef, Input, Renderer } from '@angular/core
             maxlength=1
           />
         </div>
-        <input id="special" type="text" />
-        <input type="button" value="get text" (click)=getSquares() />
       </span>
     `,
   styles: [`
@@ -44,19 +42,4 @@ import { Component, Directive, ElementRef, Input, Renderer } from '@angular/core
 export class SudokuBoardDirective {
   constructor(public el: ElementRef, public renderer: Renderer) {}
   @Input() board: number[][];
-  getSquares(): any {
-    // think i may need to do something else here, elementRef?
-    console.log(document.getElementById('special'));
-    return 'test';
-  }
 }
-
-// ngOnInit(){
-//     // Use renderer to render the element with styles;
-//     console.log(this.board);
-//     console.log(typeof this.board);
-//     if(this.board) {
-//         console.log('sudoku board initialized');
-//         // this.board = String.prototype.split.call(this.board, ',');
-//     }
-// }
