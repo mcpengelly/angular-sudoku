@@ -1,6 +1,8 @@
 export class SolverService {
   constructor() {}
-  checkValidCount = 0;
+  checks = 0;
+  backtracks = 0;
+  guesses = 0;
 
   /**
   * checks every cell in the given row to see if it can take the input value
@@ -85,7 +87,7 @@ export class SolverService {
   }
 
   checkValidPlacement(board, row, column, value){
-    this.checkValidCount++;
+    this.checks++;
     if(
     this.checkRow(board, row, value) &&
     this.checkColumn(board, column, value) &&
@@ -110,7 +112,7 @@ export class SolverService {
     for(var i = 0; i < board.length; i++){
       for(var j = 0; j < board.length; j++){
         if(board[row][j] !== 0){
-          numPool[board[row][j] + ''] = true;
+          numPool[board[row][j]] = true;
         }
       }
     }
@@ -119,7 +121,7 @@ export class SolverService {
     for(var i = 0; i < board.length; i++){
       for(var j = 0; j < board.length; j++){
         if(board[i][column] !== 0){
-          numPool[board[i][column] + ''] = true;
+          numPool[board[i][column]] = true;
         }
       }
     }
@@ -131,14 +133,14 @@ export class SolverService {
     for(var i = 0; i < 3; i++){
       for(var j = 0; j < 3; j++){
         if(board[startRowIndex + i][startColumnIndex + j] !== 0){
-          numPool[board[startRowIndex + i][startColumnIndex + j] + ''] = true;
+          numPool[board[startRowIndex + i][startColumnIndex + j]] = true;
         }
       }
     }
 
     var possibleChoices = [];
     for(var i=1; i<=9; i++) {
-      var numKey = i + '';
+      var numKey = i.toString();
       if(!numPool[numKey]) {
         possibleChoices.push(parseInt(numKey));
       }
@@ -154,7 +156,8 @@ export class SolverService {
     console.log('--- Original Board ---');
     console.log(sBoard);
     var board = sBoard.map((x)=>x.map((x)=>x));
-    // we need to distinguish which spaces need to be filled
+
+    // distinguish which spaces need to be filled
     var emptySquares = this.findEmptySquares(board);
 
     var value;
@@ -164,8 +167,9 @@ export class SolverService {
       var found = false;
 
       while(!found){
-        // if there are no choices left, reset the possible choices for this space and backtrack
+        // if no choices left, reset the possible choices for this space, wipe space and go back
         if(emptySquares[i].choices.length === 0){
+          this.backtracks++;
           emptySquares[i].choices = emptySquares[i].solveSpace.slice();
           board[row][column] = 0;
           i--;
@@ -175,6 +179,7 @@ export class SolverService {
         value = emptySquares[i].choices.shift();
 
         if(this.checkValidPlacement(board, row, column, value)){
+          this.guesses++;
           found = true;
           board[row][column] = value;
           i++;
@@ -182,7 +187,9 @@ export class SolverService {
       }
     }
 
-    console.log('checkValidCount:', this.checkValidCount);
+    console.log('guesses:', this.guesses);
+    console.log('checks:', this.checks);
+    console.log('backtracks:', this.backtracks);
     console.log('--- Solved Board ---');
     console.log(board);
     return board;
