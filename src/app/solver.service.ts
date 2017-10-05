@@ -1,5 +1,6 @@
 export class SolverService {
-  constructor() { }
+  count = 0;
+  constructor() {}
 
   checkRow(board, row, checkValue){
     if(row > 8) throw new Error('max index is 8');
@@ -46,6 +47,7 @@ export class SolverService {
     return validInput;
   }
 
+  //returns a 2d array of [row,col] coords [[2,4],[4,8]]
   findEmptySquares(board){
     var emptySquares = [];
 
@@ -61,6 +63,7 @@ export class SolverService {
   }
 
   checkValidPlacement(board, row, column, value){
+    this.count++;
     if(
     this.checkRow(board, row, value) &&
     this.checkColumn(board, column, value) &&
@@ -98,7 +101,7 @@ export class SolverService {
         }
       }
 
-      //backtrack if no possible input
+      //backtrack if no value fits
       if(!found){
         board[row][column] = 0;
         i--;
@@ -107,6 +110,7 @@ export class SolverService {
 
     console.log('--- Solved Board ---');
     console.log(board);
+    console.log('count:', this.count);
     return board;
   }
 }
