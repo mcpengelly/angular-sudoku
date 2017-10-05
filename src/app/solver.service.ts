@@ -85,7 +85,7 @@ export class SolverService {
       var found = false;
       var row = emptySquares[i][0];
       var column = emptySquares[i][1];
-      value = board[row][column] + 1; // ?
+      value = board[row][column] + 1;
 
       while(!found && value <= limit){
         if(this.checkValidPlacement(board, row, column, value)){
@@ -98,6 +98,7 @@ export class SolverService {
         }
       }
 
+      //backtrack if no possible input
       if(!found){
         board[row][column] = 0;
         i--;

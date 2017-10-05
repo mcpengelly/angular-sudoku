@@ -59,17 +59,18 @@ export class AppComponent {
     this.resultBoard = Array(9).fill(Array(9).fill(0));
   }
   onPopulateClick(sudokuPuzzle: string): void {
-    var board = sudokuPuzzle
+    let board = sudokuPuzzle
       .split(',')
-      .map((x) => {
-        return x.split('').map((y)=>parseInt(y));
+      .map((rows) => {
+        return rows.split('').map((value)=>parseInt(value));
       });
 
+    // only put the board up if its valid
     if(board.length === 9){
       this.unsolvedBoard = board;
     }
     else {
-      console.log('Invalid board input')
+      console.log('Invalid board input');
     }
   }
 }
