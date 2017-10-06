@@ -13,10 +13,16 @@ import { SolverService } from './solver.service';
       <div id="extra-controls">
         <input #sudokuInput type="text"/>
         <input (click)=onPopulateClick(sudokuInput.value) type="button" value="Populate Sudoku" />
+        <p>
+        You can input a new sudoku puzzle using a string of numbers delimited by a comma every 9 numbers
+        <br/>
+      ex: 070920405,000007806,450600000,005002009,040305002,030076000,069000004,000000000,000030900
+        </p>
       </div>
     </div>
     `,
-    providers: [SolverService]
+    providers: [SolverService],
+    styles: [`#extra-controls { margin-top:100px; }`]
 })
 
 export class AppComponent {

@@ -12,6 +12,7 @@ import { Component, Directive, ElementRef, Input, Renderer } from '@angular/core
             type="text"
             value={{square}}
             maxlength=1
+            readonly
           />
         </div>
       </span>
