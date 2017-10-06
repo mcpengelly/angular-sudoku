@@ -100,15 +100,12 @@ export class SolverService {
   /**
    * scans the board for Given values, then eliminates them as options
    * for the row, column and 3x3square that the Given value belongs to
-   * @param {[type]} board  [description]
-   * @param {[type]} row    [description]
-   * @param {[type]} column [description]
    * @return Array of possibleChoices representing the remaining possible inputs for the given cell
    */
   generatePossibleChoices(board, row, column){
-    var numPool = {};
+    var numPool = {};//hashtable for accumulating possibleChoices
 
-    // check rows spaces
+    // check rows choices
     for(var i = 0; i < board.length; i++){
       for(var j = 0; j < board.length; j++){
         if(board[row][j] !== 0){
@@ -117,7 +114,7 @@ export class SolverService {
       }
     }
 
-    // check columns spaces
+    // check columns choices
     for(var i = 0; i < board.length; i++){
       for(var j = 0; j < board.length; j++){
         if(board[i][column] !== 0){
@@ -126,7 +123,7 @@ export class SolverService {
       }
     }
 
-    // check 3x3 spaces
+    // check 3x3 choices
     var startRowIndex = row - row % 3;
     var startColumnIndex = column - column % 3;
 
@@ -149,6 +146,14 @@ export class SolverService {
     return possibleChoices;
   }
 
+  onlyOnes(board){
+    for(var i = 0; i < 9; i++){
+      for(var j = 0; j < 9; j++){
+        board[i][j]
+      }
+    }
+  }
+
   /**
    * takes an unsolved sudoku board and returns a solved one
    */
@@ -159,6 +164,17 @@ export class SolverService {
 
     // distinguish which spaces need to be filled
     var emptySquares = this.findEmptySquares(board);
+
+    //sort the emptySquares in desc order by choices.length
+    //to solve the the most constrained squares first
+    emptySquares.sort(compare);
+    function compare(a, b) {
+      if (a.choices.length < b.choices.length)
+        return -1;
+      if (a.choices.length > b.choices.length)
+        return 1;
+      return 0;
+    }
 
     var value;
     for(var i = 0; i < emptySquares.length;){

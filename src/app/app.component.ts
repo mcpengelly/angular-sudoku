@@ -6,7 +6,6 @@ import { SolverService } from './solver.service';
   selector: 'my-app',
   template: `
     <div align="center">
-      <h1>{{title}}</h1>
       <sudoku-board [board]="unsolvedBoard"></sudoku-board>
       <input (click)=onSolveClick() type="button" value="Solve" />
       <input (click)=onResetClick() type="button" value="Reset" />
@@ -21,10 +20,7 @@ import { SolverService } from './solver.service';
 })
 
 export class AppComponent {
-  constructor(
-  private solver: SolverService){}
-
-  title = 'Sudoku';
+  constructor(private solver: SolverService){}
   unsolvedBoard = [
       [1, 2, 3,  9, 0, 0,  4, 0, 0],
       [0, 0, 0,  0, 0, 0,  0, 5, 0],
