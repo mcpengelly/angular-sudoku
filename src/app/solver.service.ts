@@ -103,7 +103,7 @@ export class SolverService {
    * @return Array of possibleChoices representing the remaining possible inputs for the given cell
    */
   generatePossibleChoices(board, row, column){
-    var numPool = {};//hashtable for accumulating possibleChoices
+    var numPool = {};// hashtable for accumulating possibleChoices
 
     // check rows choices
     for(var i = 0; i < board.length; i++){
@@ -135,6 +135,7 @@ export class SolverService {
       }
     }
 
+    // map hashtable to array
     var possibleChoices = [];
     for(var i=1; i<=9; i++) {
       var numKey = i.toString();
@@ -144,14 +145,6 @@ export class SolverService {
     }
 
     return possibleChoices;
-  }
-
-  onlyOnes(board){
-    for(var i = 0; i < 9; i++){
-      for(var j = 0; j < 9; j++){
-        board[i][j]
-      }
-    }
   }
 
   /**
@@ -165,8 +158,8 @@ export class SolverService {
     // distinguish which spaces need to be filled
     var emptySquares = this.findEmptySquares(board);
 
-    //sort the emptySquares in desc order by choices.length
-    //to solve the the most constrained squares first
+    // sort the emptySquares in desc order by choices.length
+    // to solve the the most constrained squares first
     emptySquares.sort(compare);
     function compare(a, b) {
       if (a.choices.length < b.choices.length)
@@ -206,8 +199,15 @@ export class SolverService {
     console.log('guesses:', this.guesses);
     console.log('checks:', this.checks);
     console.log('backtracks:', this.backtracks);
+    this.resetCounters();
     console.log('--- Solved Board ---');
     console.log(board);
     return board;
+  }
+
+  resetCounters(){
+    this.guesses = 0;
+    this.checks = 0;
+    this.backtracks = 0;
   }
 }
