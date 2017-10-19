@@ -109,7 +109,7 @@ export class SolverService {
     for(var i = 0; i < board.length; i++){
       for(var j = 0; j < board.length; j++){
         if(board[row][j] !== 0){
-          numPool[board[row][j]] = true;
+          numPool[board[row][j]] = true; // if space is not 0, add its value to the numberPool
         }
       }
     }
@@ -126,6 +126,7 @@ export class SolverService {
     // check 3x3 choices
     var startRowIndex = row - row % 3;
     var startColumnIndex = column - column % 3;
+    // console.log('startRowIndex', startRowIndex);
 
     for(var i = 0; i < 3; i++){
       for(var j = 0; j < 3; j++){
@@ -135,9 +136,9 @@ export class SolverService {
       }
     }
 
-    // map hashtable to array
+    // map values that ARENT in the hashtable to array
     var possibleChoices = [];
-    for(var i=1; i<=9; i++) {
+    for(var i = 1; i <= 9; i++) {
       var numKey = i.toString();
       if(!numPool[numKey]) {
         possibleChoices.push(parseInt(numKey));
@@ -153,7 +154,7 @@ export class SolverService {
   solve(sBoard){
     console.log('--- Original Board ---');
     console.log(sBoard);
-    var board = sBoard.map((x)=>x.map((x)=>x));
+    var board = sBoard.map((x)=>x.map((x)=>x)); // deep clone 2d array
 
     // distinguish which spaces need to be filled
     var emptySquares = this.findEmptySquares(board);
@@ -166,6 +167,7 @@ export class SolverService {
         return -1;
       if (a.choices.length > b.choices.length)
         return 1;
+
       return 0;
     }
 
@@ -179,12 +181,14 @@ export class SolverService {
         // if no choices left, reset the possible choices for this space, wipe space and go back
         if(emptySquares[i].choices.length === 0){
           this.backtracks++;
+          //clone the original solveSpace back into choices list
           emptySquares[i].choices = emptySquares[i].solveSpace.slice();
           board[row][column] = 0;
           i--;
           break;
         }
 
+        //shift the first element out of the array and use it as our guess value
         value = emptySquares[i].choices.shift();
 
         if(this.checkValidPlacement(board, row, column, value)){
@@ -200,6 +204,7 @@ export class SolverService {
     console.log('checks:', this.checks);
     console.log('backtracks:', this.backtracks);
     this.resetCounters();
+
     console.log('--- Solved Board ---');
     console.log(board);
     return board;

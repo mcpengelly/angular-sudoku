@@ -64,7 +64,7 @@ export class AppComponent {
     let board = sudokuPuzzle
       .split(',')
       .map((rows) => {
-        return rows.split('').map((value)=>parseInt(value));
+        return rows.split('').map((value) => parseInt(value));
       });
 
     // only put the board up if its valid
